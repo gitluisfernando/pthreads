@@ -13,11 +13,13 @@ typedef struct
   char *genero;
 } musicas;
 
-/*O Mutex permite bloqueios para preservar seções críticas ou obter acesso exclusivo (Escrita e Leitura) a recursos
-* O Cond_t define as condições das variáveis para Produto x Consumo */
+/* O Mutex permite bloqueios para preservar seções críticas ou obter acesso exclusivo 
+ * (Escrita e Leitura) a recursos
+ * O Cond_t define as condições das variáveis para Produto x Consumo */
 pthread_mutex_t mutexFila;
 pthread_cond_t condicaoFila;
 
+//Instacia a fila
 Fila fila;
 
 //Cria um vetor com as canções e suas respectivas informações
@@ -25,13 +27,16 @@ musicas faixas[] = {
     {"The Number of the Beast", "Iron Maiden", "04:49", "Heavy Metal"},
     {"One", "Metallica", "07:27", "Thrash Metal"},
     {"A Day in Life", "The Beatles", "05:37", "Classic Rock"},
+    {"Time", "Pink Floyd", "06:53", "Psychedelic/Progressive Rock"},
     {"Negro Drama", "Racionais MC's", "06:51", "Rap"},
     {"Construção", "Chico Buarque", "06:23", "MPB"},
     {"Walk", "Foo Fighters", "04:15", "Rock"},
     {"What's Going On", "Marvin Gaye", "03:52", "Soul Music"},
     {"Blowin' in the Wind", "Bob Dylan", "02:48", "Folk Rock"},
     {"O Mundo é um Moinho", "Cartola", "03:55", "Samba"},
-    {"Time", "Pink Floyd", "06:53", "Psychedelic/Progressive Rock"}};
+    {"Bohemian Rhapsody", "Queen", "05:55", "Classic Rock"},
+    {"Smells Like Teen Spirit", "Nirvana", "05:01", "Grunge"},
+    {"Poison Heart", "Ramones", "04:04", "Punk Rock"}};
 
 //Exibe as músicas no terminal
 void imprimirMusicas(musicas *musica)
