@@ -58,19 +58,25 @@ void Inicializar()
   pthread_cond_init(&condicaoFila, NULL);
 }
 
-void *Fornecedor(void *data)
+void *Fornecedor()
 {
-  musicas *musica = (musicas *)data;
 
-  /* Bloqueia a mutexFila para garantir que a adição de dados à fila ocorra sem problemas
+  while (1)
+  {
+    musicas *musica = &faixas[rand() % 20];
+
+    /* Bloqueia a mutexFila para garantir que a adição de dados à fila ocorra sem problemas
    * Envia novos dados para a fila
    * Sinaliza à condicaoFila que novos dados estão disponíveis na fila
    * Ao terminar, desbloqueia o mutexFila */
 
-  pthread_mutex_lock(&mutexFila);
-  enviaParaFila(&fila, &musica);
-  pthread_cond_signal(&condicaoFila);
-  pthread_mutex_unlock(&mutexFila);
+    pthread_mutex_lock(&mutexFila);
+    enviaParaFila(&fila, &musica);
+    pthread_cond_signal(&condicaoFila);
+    pthread_mutex_unlock(&mutexFila);
+
+    sleep(2);
+  }
 
   return NULL;
 }
@@ -108,23 +114,23 @@ int main(int argc, char *argv[])
   Inicializar();
   iniciaFila(&fila, sizeof(musicas));
 
-  pthread_t consumidor;
-  pthread_create(&consumidor, NULL, Consumidor, NULL);
+  pthread_t fornecedor;
+  pthread_create(&fornecedor, NULL, Fornecedor, NULL);
 
-  pthread_t fornecedores[3];
+  pthread_t consumidores[3];
 
   for (int i = 0; i < 3; ++i)
   {
-    pthread_create(&fornecedores[i], NULL, Fornecedor, &faixas[rand() % 20]);
+    pthread_create(&consumidores[i], NULL, Consumidor, NULL);
   }
 
   //Aguarda todos os threads do provedor juntando-se a eles
   for (int i = 0; i < 3; i++)
   {
-    pthread_join(fornecedores[i], NULL);
+    pthread_join(consumidores[i], NULL);
   }
 
-  pthread_join(consumidor, NULL);
+  pthread_join(fornecedor, NULL);
 
   return EXIT_SUCCESS;
 }
