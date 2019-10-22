@@ -63,7 +63,7 @@ void *Fornecedor()
 
   while (1)
   {
-    musicas *musica = &faixas[rand() % 20];
+    musicas *musica = &faixas[rand() % 13];
 
     /* Bloqueia a mutexFila para garantir que a adição de dados à fila ocorra sem problemas
    * Envia novos dados para a fila
